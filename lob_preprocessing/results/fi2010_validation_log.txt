@@ -1,0 +1,83 @@
+INFO:data.fi2010_loader:FI2010Loader initialized: /Users/aepeul/lob-project/BenchmarkDatasets/NoAuction/1.NoAuction_Zscore
+INFO:data.fi2010_loader:Loading Train_Dst_NoAuction_ZScore_CF_1.txt...
+INFO:data.fi2010_loader:Loaded 39512 samples
+INFO:data.fi2010_loader:  Features shape: (39512, 40)
+INFO:data.fi2010_loader:  Label distribution: [16023  8875 14614]
+INFO:data.fi2010_loader:Day 1: 39512 samples
+INFO:data.fi2010_loader:Loading Train_Dst_NoAuction_ZScore_CF_2.txt...
+INFO:data.fi2010_loader:Loaded 77909 samples
+INFO:data.fi2010_loader:  Features shape: (77909, 40)
+INFO:data.fi2010_loader:  Label distribution: [32250 15924 29735]
+INFO:data.fi2010_loader:Day 2: 77909 samples
+INFO:data.fi2010_loader:
+Total training data: 117421 samples
+INFO:data.fi2010_loader:  Label distribution: [48273 24799 44349]
+INFO:data.fi2010_loader:Loading Test_Dst_NoAuction_ZScore_CF_1.txt...
+INFO:data.fi2010_loader:Loaded 38397 samples
+INFO:data.fi2010_loader:  Features shape: (38397, 40)
+INFO:data.fi2010_loader:  Label distribution: [16227  7049 15121]
+Traceback (most recent call last):
+  File "/Users/aepeul/lob-project/lob_preprocessing/experiments/run_fi2010_validation.py", line 236, in <module>
+    results, comparison = run_fi2010_validation()
+                          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/aepeul/lob-project/lob_preprocessing/experiments/run_fi2010_validation.py", line 85, in run_fi2010_validation
+    X_train_proc = np.hstack([mid_price_train_proc, X_train[:, 1:]])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.12/site-packages/numpy/core/shape_base.py", line 357, in hstack
+    return _nx.concatenate(arrs, 0, dtype=dtype, casting=casting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: all the input arrays must have same number of dimensions, but the array at index 0 has 1 dimension(s) and the array at index 1 has 2 dimension(s)
+
+======================================================================
+ 🔬 FI-2010 REAL DATA VALIDATION
+======================================================================
+
+📥 Loading FI-2010 data...
+✅ Data loaded
+   Training: 117,421 samples
+   Test: 38,397 samples
+   Features: 40
+   Train label dist: {0: 48273, 1: 24799, 2: 44349}
+   Test label dist: {0: 16227, 1: 7049, 2: 15121}
+
+======================================================================
+▶ Configuration: RAW + XGBOOST
+======================================================================
+   No preprocessing (raw data)
+   Training xgboost...
+   Evaluating...
+
+   📊 Results:
+      Accuracy: 0.5167
+      F1-Macro: 0.3772
+      MCC: 0.1930
+
+   Confusion Matrix:
+      [11939    25  4263]
+      [4879    8 2162]
+      [7213   14 7894]
+
+======================================================================
+▶ Configuration: WAVELET + XGBOOST
+======================================================================
+   Preprocessing with wavelet...
+   SNR improvement: 311.93 dB
+   Training xgboost...
+   Evaluating...
+
+   📊 Results:
+      Accuracy: 0.5171
+      F1-Macro: 0.3778
+      MCC: 0.1931
+
+   Confusion Matrix:
+      [11785    23  4419]
+      [4737    7 2305]
+      [7044   14 8063]
+
+======================================================================
+▶ Configuration: KALMAN + XGBOOST
+======================================================================
+   Preprocessing with kalman...
+
+❌ Error: all the input arrays must have same number of dimensions, but the array at index 0 has 1 dimension(s) and the array at index 1 has 2 dimension(s)

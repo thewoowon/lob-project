@@ -1,0 +1,207 @@
+# Configuration for LOB Preprocessing Experiments
+
+# Data Settings
+data:
+  source: "bybit"  # bybit, binance, or custom
+  assets:
+    - "BTCUSDT"
+    - "ETHUSDT"
+  period:
+    start: "2024-01-01"
+    end: "2024-03-31"
+  frequency_ms: 100  # Sampling frequency in milliseconds
+  lob_depths: [5, 10, 20, 40]
+
+  # Data paths
+  raw_data_dir: "data/raw"
+  processed_data_dir: "data/processed"
+  features_dir: "data/features"
+
+# Preprocessing Methods
+preprocessing:
+  methods:
+    - "raw"           # No preprocessing
+    - "savgol"        # Savitzky-Golay filter
+    - "kalman"        # Kalman filter
+    - "wavelet"       # Wavelet denoising
+    - "ma"            # Moving average
+
+  # Savitzky-Golay parameters
+  savgol:
+    window_lengths: [5, 11, 21]
+    polyorders: [2, 3]
+    default_window: 11
+    default_poly: 2
+
+  # Kalman filter parameters
+  kalman:
+    transition_covariance: 0.01
+    observation_covariance: 1.0
+
+  # Wavelet parameters
+  wavelet:
+    wavelet_type: "db4"  # Daubechies 4
+    level: 3
+    threshold_mode: "soft"
+
+  # Moving average parameters
+  ma:
+    window_sizes: [5, 10, 20]
+    default_window: 10
+    type: "simple"  # simple or exponential
+
+# Feature Engineering
+features:
+  # Price features
+  price_features:
+    - "mid_price"
+    - "spread"
+    - "microprice"
+    - "weighted_mid_price"
+
+  # Volume features
+  volume_features:
+    - "order_imbalance"
+    - "total_volume"
+    - "volume_ratio"
+
+  # Order flow
+  order_flow:
+    - "ofi"  # Order Flow Imbalance
+    - "trade_intensity"
+
+  # Time features
+  time_features:
+    - "time_since_last_trade"
+    - "rolling_volatility"
+
+  # Rolling window sizes for features
+  rolling_windows: [5, 10, 20, 50]
+
+# Model Settings
+models:
+  # Traditional ML
+  logistic:
+    C: 1.0
+    max_iter: 1000
+    solver: "lbfgs"
+
+  xgboost:
+    max_depth: 3
+    learning_rate: 0.1
+    n_estimators: 100
+    subsample: 0.8
+    colsample_bytree: 0.8
+    objective: "multi:softprob"
+
+  catboost:
+    depth: 6
+    learning_rate: 0.1
+    iterations: 100
+    verbose: False
+
+  # Deep Learning
+  cnn:
+    filters: [64, 64, 32]
+    kernel_size: 3
+    pool_size: 2
+    dense_units: 32
+    dropout: 0.3
+    epochs: 50
+    batch_size: 64
+
+  deeplob:
+    # Based on Zhang et al. 2019
+    conv_blocks: 3
+    inception_blocks: 2
+    lstm_units: 64
+    epochs: 50
+    batch_size: 64
+
+  lstm:
+    units: [64, 32]
+    dropout: 0.2
+    epochs: 50
+    batch_size: 64
+
+# Prediction Settings
+prediction:
+  task: "ternary"  # binary or ternary
+  horizons_ms: [100, 500, 1000, 5000, 10000]
+
+  # Labeling thresholds (for ternary classification)
+  threshold_ticks: 1
+
+  # Train/Val/Test split
+  train_ratio: 0.6
+  val_ratio: 0.2
+  test_ratio: 0.2
+
+# Evaluation Metrics
+evaluation:
+  metrics:
+    - "accuracy"
+    - "f1_score"
+    - "mcc"  # Matthews Correlation Coefficient
+    - "confusion_matrix"
+    - "precision"
+    - "recall"
+
+  # Signal quality metrics
+  signal_metrics:
+    - "snr"  # Signal-to-Noise Ratio
+    - "autocorrelation"
+
+  # Computational metrics
+  computational_metrics:
+    - "training_time"
+    - "inference_latency"
+    - "memory_usage"
+
+# Experiment Settings
+experiments:
+  # Experiment tracking
+  tracking:
+    backend: "mlflow"  # mlflow or wandb
+    experiment_name: "lob_preprocessing"
+    run_name_template: "{preprocess}_{model}_{depth}_{horizon}"
+
+  # Computational resources
+  n_jobs: -1  # Use all CPUs
+  use_gpu: True
+  gpu_devices: [0]
+
+  # Reproducibility
+  random_seed: 42
+
+  # Parallel execution
+  parallel_experiments: True
+  max_parallel_jobs: 4
+
+# Analysis Settings
+analysis:
+  # Statistical tests
+  significance_level: 0.05
+  statistical_tests:
+    - "t_test"
+    - "wilcoxon"
+    - "friedman"
+
+  # Visualization
+  visualization:
+    dpi: 300
+    figsize: [12, 8]
+    style: "seaborn-v0_8-darkgrid"
+    save_format: "png"
+
+# Output Settings
+output:
+  results_dir: "results"
+  plots_dir: "results/plots"
+  models_dir: "models/saved"
+  logs_dir: "logs"
+
+  # Save intermediate results
+  save_preprocessed: True
+  save_features: True
+  save_models: True

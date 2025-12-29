@@ -1,0 +1,28 @@
+{
+  "timestamp": "2025-12-29T22:40:56.612214",
+  "data_file": "data/combined_005930_20251215.jsonl",
+  "n_samples": 44224,
+  "n_train": 30956,
+  "n_val": 6634,
+  "n_test": 6634,
+  "n_features": 78,
+  "k": 100,
+  "threshold_pct": 0.0001,
+  "random_seed": 42,
+  "train_accuracy": 0.9764827497092647,
+  "val_accuracy": 0.9003617726861622,
+  "test_accuracy": 0.6989749773892071,
+  "hyperparameters": {
+    "iterations": 500,
+    "depth": 10,
+    "learning_rate": 0.1,
+    "loss_function": "MultiClass",
+    "classes_count": 3,
+    "eval_metric": "Accuracy",
+    "verbose": 100,
+    "early_stopping_rounds": 50,
+    "task_type": "CPU",
+    "bootstrap_type": "Bayesian"
+  },
+  "model_path": "models/catboost_seed_42.cbm"
+}

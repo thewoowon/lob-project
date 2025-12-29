@@ -1,0 +1,6 @@
+.claude/
+BenchmarkDatasets/
+data/
+ec2_setup/
+BenchmarkDatasets.zip
+aws_setup/
