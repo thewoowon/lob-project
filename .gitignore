@@ -4,3 +4,5 @@ data/
 ec2_setup/
 BenchmarkDatasets.zip
 aws_setup/
+lambda_kis.zip
+.venv/

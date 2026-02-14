@@ -73,11 +73,20 @@ def temporal_train_val_test_split(
         val_df = df.iloc[train_end:val_end]
         test_df = df.iloc[val_end:]
 
-    # Verify no temporal overlap
-    assert train_df['timestamp'].max() <= val_df['timestamp'].min(), \
-        "Train data leaks into validation!"
-    assert val_df['timestamp'].max() <= test_df['timestamp'].min(), \
-        "Validation data leaks into test!"
+    # Verify no temporal overlap (per-stock for multi-stock data)
+    if by_stock and 'stock_code' in df.columns:
+        for stock_code in df['stock_code'].unique():
+            t_max = train_df[train_df['stock_code'] == stock_code]['timestamp'].max()
+            v_min = val_df[val_df['stock_code'] == stock_code]['timestamp'].min()
+            v_max = val_df[val_df['stock_code'] == stock_code]['timestamp'].max()
+            te_min = test_df[test_df['stock_code'] == stock_code]['timestamp'].min()
+            assert t_max <= v_min, f"Train data leaks into validation for {stock_code}!"
+            assert v_max <= te_min, f"Validation data leaks into test for {stock_code}!"
+    else:
+        assert train_df['timestamp'].max() <= val_df['timestamp'].min(), \
+            "Train data leaks into validation!"
+        assert val_df['timestamp'].max() <= test_df['timestamp'].min(), \
+            "Validation data leaks into test!"
 
     print("=" * 70)
     print("Temporal Train/Val/Test Split")
